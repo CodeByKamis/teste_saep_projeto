@@ -1,0 +1,43 @@
+//importando tudo de variaveis 
+@use './variaveis' as *;
+// estiliza a barra de navegação principal
+.barradenavegacao{
+    background-color: $primary;
+    color: $backgrond;
+    height: 40px;
+    margin: 0;
+
+    ul{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-right: 20px;
+        gap: 20px;
+        align-self: center;
+        padding: 10px;
+
+    }
+
+    ul :hover{
+        background-color: $accent;
+        border-radius: 8px;
+        font-size: 17px;
+    }
+
+    li{
+        text-decoration: none;
+        list-style: none;
+
+    }
+
+    a{
+        text-decoration: none;
+        color: $backgrond;
+
+        a:hover & :active{
+            color: $primary;
+            font-weight: bold;
+
+        }
+    }
+}

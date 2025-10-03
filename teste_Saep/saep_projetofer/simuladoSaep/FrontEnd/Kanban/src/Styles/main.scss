@@ -1,0 +1,11 @@
+//serve para importar e definir os arquivos scss que se usa em outros arquivos do projeto
+@use './_quadro.scss';
+@use './_variaveis.scss';
+@use './coluna.scss';
+@use './barraNavegacao.scss';
+@use './cabecalho.scss';
+@use './cadUsuario.scss';
+@use './tarefa.scss';
+@use './cadEditTarefa.scss';
+
+

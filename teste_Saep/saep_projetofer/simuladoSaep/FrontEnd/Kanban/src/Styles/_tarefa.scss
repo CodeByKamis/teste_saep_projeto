@@ -1,0 +1,109 @@
+//estilização do card da tarefa
+.card-tarefa {
+  width: 280px;
+  min-height: 100px;
+  background-color: #f9f9f9;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+//estilizando a transicao
+   .drag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: grab;
+      flex-shrink: 0;
+      transition: 0.2s ease;
+    }
+  // título da tarefa
+  h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    color: #333;
+    background-color: #d8e8ff;
+    border-radius: 4px;
+
+  }
+
+//lista de dados de descrição, setor e prioridade
+.informtarefas {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .linha-info {
+    display: flex;
+    gap: 6px; /* espaço entre dt e dd */
+    align-items: center;
+  }
+
+  dt {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0;
+    min-width: 90px;
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+  }
+}
+//estilizando os botoes de excluir e editar
+  button {
+    padding: 6px 12px;
+    margin-right: 8px;
+    margin-top: 8px;
+    background-color: #184b1a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    &:hover {
+      background-color: #184b1a;
+    }
+  }
+//serve para alterar os status
+  form {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #064c85;
+
+      &:hover {
+        background-color: #064c85;
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+//importando tudo de variaveis 
+@use './variaveis.scss' as *;
+
+//container principal que envolve as colunas do quadro
+.sectionstatus {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+
+//cabeçalho da página com título centralizado
+.titulodapg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #eaeaea;
+}

@@ -1,0 +1,17 @@
+//importando tudo de variaveis 
+@use './variaveis' as *;
+//estilizando o cabeçalho da pagina
+.cabecalhoprincipal{
+    background-color: $accent;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+//titulo dentro do cabeçalho
+    h1{
+        color: $backgrond;
+        align-items: center;
+        justify-content: center;
+      
+    }
+}
