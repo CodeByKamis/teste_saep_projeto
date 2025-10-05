@@ -1,0 +1,84 @@
+//importando tudo de variaveis 
+@use './variaveis' as *;
+
+//é o container principal do formulário
+.formulario {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: $backgrond;
+  border-radius: 10px;
+  font-family: 'Poppins', sans-serif;
+  color: $primary;
+
+//é o titulo principal do formulario
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  form.edicaoform {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  label {
+    margin-top: 10px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    display: block;
+  }
+//o mesmo estilo para input, select, testarea
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $primary;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.2);
+    }
+//para campos desabilitados ou somente leitura
+    &:disabled,
+    &[readonly] {
+      background-color: #f4f4f4;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+//estilizando o botao
+  button {
+    margin-top: 10px;
+    width: 120px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    background-color: $accent;
+    color: $backgrond;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+//aparecer mensagem de erro na cor vermelha
+  p.mensagemdeerro {
+    color: #d93025;
+    font-size: 0.875rem;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+  }
+}
