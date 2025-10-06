@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, useEffect } from 'react';
+import axios from 'axios'; //é o hook que faz a comunicação com a internet (Http)
+import { useForm } from 'react-hook-form'; // Hook (use) aqui permite a validação de formulario
+import { z } from 'zod'; // zod é uma descrição de como eu validar, quais seriam as regras
+import { zodResolver } from '@hookform/resolvers/zod'; // é o que liga o hook form com o zod
+import { useState, useEffect } from 'react'; //para gerenciar o status das coisas que sao puxadas do backend
 
-// validação de formulário
+//validação de formulário -- estou usando as regras do zod, que pode ser consultada na web
 const schemaCadTarefa = z.object({
     nome: z.string()
         .trim()
-        .min(1, 'Insira ao menos 1 caractere')
+        .min(1, 'Insira ao menos 1 caractere') //mesma mensagem que uso na hora de fazer o teste
         .max(30, 'Insira até 30 caracteres'),
     descricao: z.string()
         .trim()
@@ -29,17 +29,16 @@ export function CadTarefa() {
     const [usuarios, setUsuarios] = useState([]);
 
     const {
-        register,
-        handleSubmit,
-        formState: { errors },
+        register,  //registra para mim a tarefa
+        handleSubmit, //no momento que der submit
+        formState: { errors }, //no formulario, se der ruim guarda os erros na variavel errors
         setValue,
-        reset,
-    } = useForm({
+        reset,} = useForm({
         resolver: zodResolver(schemaCadTarefa),
         mode: "onChange",
         defaultValues: {
             status: "A",
-            prioridade: "B", // Adicionado para garantir um valor padrão no select
+            prioridade: "B", // garante um valor padrão na hora do select
         },
     });
 
@@ -49,37 +48,34 @@ export function CadTarefa() {
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]+/g, ""); // só letras e espaço
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
         valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
         
-        // Limite de 30 caracteres (verificado depois das substituições)
+        // max de 30 caracteres
         if (valor.length > 30) valor = valor.slice(0, 30); 
 
         setValue("nome", valor, { shouldValidate: true });
     };
 
-    // tratando o campo descricao (previne entrada inválida antes do submit)
+    // tratando o campo descricao previne entrada inválida antes la no submit
     const handleDescricaoChange = (e) => {
         let valor = e.target.value;
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9,.!?\s]+/g, ""); // só letras, números e alguns símbolos básicos
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
         valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
         
-        // Limite de 255 caracteres
+        // max de 255 caracteres
         if (valor.length > 255) valor = valor.slice(0, 255); 
 
         setValue("descricao", valor, { shouldValidate: true });
     };
 
-    // tratando o campo setor (previne entrada inválida antes do submit)
+    // campo setor, serve para previnir entrada inválida antes de submeter
     const handleSetorChange = (e) => {
         let valor = e.target.value;
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]+/g, ""); // só letras e espaço
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
         valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
         
         // Limite de 100 caracteres
@@ -88,17 +84,16 @@ export function CadTarefa() {
         setValue("nomeSetor", valor, { shouldValidate: true });
     };
 
-    // busca usuários
+    // busca os usuários
     useEffect(() => {
-        // ... (fetchUsuarios permanece igual, mas se der erro no teste de Prioridade,
-        // pode ser necessário mockar o retorno desta função no arquivo de teste)
+       
         async function fetchUsuarios() {
             try {
-                // Mockar o axios.get no teste para evitar este erro em ambiente de teste
+                // mockar o axios.get no teste para evitar este erro em ambiente de teste
                 const response = await axios.get('http://127.0.0.1:8000/api/usuario/');
                 setUsuarios(response.data);
             } catch (error) {
-                // console.error('Erro ao buscar usuários:', error);
+                console.error('Erro ao buscar usuários:', error);
             }
         }
         fetchUsuarios();
@@ -120,7 +115,7 @@ export function CadTarefa() {
     return (
         <form className="formulario" onSubmit={handleSubmit(criarTarefa)} noValidate>
             <h2>Cadastro de tarefas</h2>
-
+            {/* cadastranod o nome da tarefa */}
             <label htmlFor="nome">Nome da tarefa:</label>
             <input
                 id="nome"
@@ -132,7 +127,7 @@ export function CadTarefa() {
                 aria-describedby={errors.nome ? "erro-nome" : undefined}
             />
             {errors.nome && <p id="erro-nome" role="alert">{errors.nome.message}</p>}
-
+            {/* cadastranod a descricao da tarefa */}
             <label htmlFor="descricao">Descrição:</label>
             <textarea
                 id="descricao"
@@ -143,7 +138,7 @@ export function CadTarefa() {
                 aria-describedby={errors.descricao ? "erro-descricao" : undefined}
             />
             {errors.descricao && <p id="erro-descricao" role="alert">{errors.descricao.message}</p>}
-
+            {/*cadastrando o setor da tarefa */}
             <label htmlFor="nomeSetor">Setor:</label>
             <input
                 id="nomeSetor"
@@ -155,7 +150,7 @@ export function CadTarefa() {
                 aria-describedby={errors.nomeSetor ? "erro-nomeSetor" : undefined}
             />
             {errors.nomeSetor && <p id="erro-nomeSetor" role="alert">{errors.nomeSetor.message}</p>}
-
+            {/* informando a prioridade da tarefa */}
             <label htmlFor="prioridade">Prioridade:</label>
             <select
                 id="prioridade"
@@ -168,7 +163,7 @@ export function CadTarefa() {
                 <option value="A">Alta</option>
             </select>
             {errors.prioridade && <p id="erro-prioridade" role="alert">{errors.prioridade.message}</p>}
-
+            {/* o status ja vem predefinido nesse momento e sem possibilidade de alterar */}
             <label htmlFor="status">Status:</label>
             <select
                 id="status"
@@ -179,7 +174,7 @@ export function CadTarefa() {
                 <option value="A">A fazer</option>
             </select>
             {errors.status && <p id="erro-status" role="alert">{errors.status.message}</p>}
-
+            {/* informando os usuarios cadastrados no sistema para selecionar um*/}
             <label htmlFor="usuario">Usuário:</label>
             <select
                 id="usuario"
@@ -195,7 +190,7 @@ export function CadTarefa() {
                 ))}
             </select>
             {errors.usuario && <p id="erro-usuario" role="alert">{errors.usuario.message}</p>}
-
+                {/* botao para submeter essas informações */}
             <button type='submit'>Cadastrar Tarefa</button>
         </form>
     );
