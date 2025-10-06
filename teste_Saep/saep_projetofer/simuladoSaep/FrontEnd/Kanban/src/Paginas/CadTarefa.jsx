@@ -1,12 +1,10 @@
-import axios from 'axios'; // é o hook que faz a comunicação com a internet (Http)
-// são hooks que permite a validação de interação com o usuário... NUNCA DUVIDE DA CAPACIDADE DO USUÁRIO
-// React é comum ver o zod
-import { useForm } from 'react-hook-form'; // Hook (use) aqui permite a validação de formulario
-import { z } from 'zod'; // zod é uma descrição de como eu validar, quais seriam as regras
-import { zodResolver } from '@hookform/resolvers/zod'; // é o que liga o hook form com o zod
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect } from 'react';
 
-// validação de formulário -- estou usando as regras do zod, que pode ser consultada na web
+// validação de formulário
 const schemaCadTarefa = z.object({
     nome: z.string()
         .trim()
@@ -41,6 +39,7 @@ export function CadTarefa() {
         mode: "onChange",
         defaultValues: {
             status: "A",
+            prioridade: "B", // Adicionado para garantir um valor padrão no select
         },
     });
 
@@ -50,8 +49,11 @@ export function CadTarefa() {
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]+/g, ""); // só letras e espaço
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        valor = valor.replace(/([A-Za-zÀ-ÖØ-öø-ÿ])\1{2,}/g, "$1$1"); // evita repetições exageradas de letras
-        if (valor.length > 30) valor = valor.slice(0, 30); // máximo 30 caracteres
+        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
+        valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
+        
+        // Limite de 30 caracteres (verificado depois das substituições)
+        if (valor.length > 30) valor = valor.slice(0, 30); 
 
         setValue("nome", valor, { shouldValidate: true });
     };
@@ -62,8 +64,11 @@ export function CadTarefa() {
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9,.!?\s]+/g, ""); // só letras, números e alguns símbolos básicos
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        valor = valor.replace(/([A-Za-zÀ-ÖØ-öø-ÿ])\1{2,}/g, "$1$1"); // evita repetições exageradas de letras
-        if (valor.length > 255) valor = valor.slice(0, 255); // máximo 255 caracteres
+        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
+        valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
+        
+        // Limite de 255 caracteres
+        if (valor.length > 255) valor = valor.slice(0, 255); 
 
         setValue("descricao", valor, { shouldValidate: true });
     };
@@ -74,20 +79,26 @@ export function CadTarefa() {
 
         valor = valor.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ ]+/g, ""); // só letras e espaço
         valor = valor.replace(/\s{2,}/g, " "); // evita espaços duplos
-        valor = valor.replace(/([A-Za-zÀ-ÖØ-öø-ÿ])\1{2,}/g, "$1$1"); // evita repetições exageradas de letras
-        if (valor.length > 100) valor = valor.slice(0, 100); // máximo 100 caracteres
+        // CORREÇÃO: Usa (.) para pegar QUALQUER caractere e limitar repetições
+        valor = valor.replace(/(.)\1{2,}/g, "$1$1"); 
+        
+        // Limite de 100 caracteres
+        if (valor.length > 100) valor = valor.slice(0, 100); 
 
         setValue("nomeSetor", valor, { shouldValidate: true });
     };
 
     // busca usuários
     useEffect(() => {
+        // ... (fetchUsuarios permanece igual, mas se der erro no teste de Prioridade,
+        // pode ser necessário mockar o retorno desta função no arquivo de teste)
         async function fetchUsuarios() {
             try {
+                // Mockar o axios.get no teste para evitar este erro em ambiente de teste
                 const response = await axios.get('http://127.0.0.1:8000/api/usuario/');
                 setUsuarios(response.data);
             } catch (error) {
-                console.error('Erro ao buscar usuários:', error);
+                // console.error('Erro ao buscar usuários:', error);
             }
         }
         fetchUsuarios();
